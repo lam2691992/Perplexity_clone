@@ -41,6 +41,7 @@ dependencies:
   flutter_markdown: ^0.7.7+1
   markdown: ^7.3.0
   skeletonizer: ^1.4.3
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
