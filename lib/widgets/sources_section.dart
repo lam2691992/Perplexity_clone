@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perplexity/services/chat_web_service.dart';
 import 'package:perplexity/theme/colors.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SourcesSection extends StatefulWidget {
   const SourcesSection({super.key});
@@ -11,29 +12,28 @@ class SourcesSection extends StatefulWidget {
 }
 
 class _SourcesSectionState extends State<SourcesSection> {
-
   bool isLoading = true;
   final List<Map<String, dynamic>> searchResults = [];
 
   @override
-void initState() {
-  super.initState();
-  ChatWebService().searchResultStream.listen((data) {
-    final dynamic payload = data['data'];
+  void initState() {
+    super.initState();
+    ChatWebService().searchResultStream.listen((data) {
+      final dynamic payload = data['data'];
 
-    if (payload is List) {
-      setState(() {
-        searchResults.addAll(
-          payload.cast<Map<String, dynamic>>(),
-        );
-        isLoading = false;
-      });
-    } else {
-      debugPrint('Unexpected format in search result: ${payload.runtimeType}');
-    }
-  });
-}
-
+      if (payload is List) {
+        setState(() {
+          searchResults.addAll(
+            payload.cast<Map<String, dynamic>>(),
+          );
+          isLoading = false;
+        });
+      } else {
+        debugPrint(
+            'Unexpected format in search result: ${payload.runtimeType}');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,32 +64,43 @@ void initState() {
             spacing: 16,
             runSpacing: 16,
             children: searchResults.map((res) {
-              return Container(
-                width: 150,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.cardColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      res['title'],
-                      style: const TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.w500),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      res['url'],
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    )
-                  ],
+              return InkWell(
+                onTap: () async {
+                  final Uri uri = Uri.parse(res['url']);
+                  try {
+                    await launchUrl(uri, mode: LaunchMode.platformDefault);
+                  } catch (e) {
+                    debugPrint('Could not launch ${res['url']}: $e');
+                  }
+                },
+                child: Container(
+                  width: 150,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.cardColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        res['title'],
+                        style: const TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.w500),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        res['url'],
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 12),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      )
+                    ],
+                  ),
                 ),
               );
             }).toList(),

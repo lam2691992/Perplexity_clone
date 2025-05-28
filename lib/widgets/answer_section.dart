@@ -36,7 +36,7 @@ class _AnswerSectionState extends State<AnswerSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Perplexity',
+          '------',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
