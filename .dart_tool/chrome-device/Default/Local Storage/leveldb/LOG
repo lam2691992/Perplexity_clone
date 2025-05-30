@@ -1,0 +1,25 @@
+2025/05/28-15:55:00.919 43dc Reusing MANIFEST C:\Users\LamNV\AppData\Local\Temp\flutter_tools.aa67b680\flutter_tools_chrome_device.2b9ed02a\Default\Local Storage\leveldb/MANIFEST-000001
+2025/05/28-15:55:00.925 43dc Recovering log #3
+2025/05/28-15:55:00.930 43dc Level-0 table #3: started
+2025/05/28-15:55:00.943 43dc Level-0 table #3: 523845 bytes OK
+2025/05/28-15:55:00.952 43dc Delete type=0 #3
+2025/05/28-16:52:08.798 578c Level-0 table #6: started
+2025/05/28-16:52:08.805 578c Level-0 table #6: 88664 bytes OK
+2025/05/28-16:52:08.809 578c Delete type=0 #4
+2025/05/28-16:52:17.414 43dc Level-0 table #8: started
+2025/05/28-16:52:17.419 43dc Level-0 table #8: 73813 bytes OK
+2025/05/28-16:52:17.422 43dc Delete type=0 #5
+2025/05/28-16:52:37.734 578c Level-0 table #10: started
+2025/05/28-16:52:37.742 578c Level-0 table #10: 92963 bytes OK
+2025/05/28-16:52:37.747 578c Delete type=0 #7
+2025/05/28-16:52:37.747 578c Compacting 4@0 + 0@1 files
+2025/05/28-16:52:37.761 578c Generated table #11@0: 138 keys, 680101 bytes
+2025/05/28-16:52:37.761 578c Compacted 4@0 + 0@1 files => 680101 bytes
+2025/05/28-16:52:37.763 578c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/28-16:52:37.764 578c Delete type=2 #3
+2025/05/28-16:52:37.764 578c Delete type=2 #6
+2025/05/28-16:52:37.764 578c Delete type=2 #8
+2025/05/28-16:52:37.764 578c Delete type=2 #10
+2025/05/28-16:55:25.073 578c Level-0 table #13: started
+2025/05/28-16:55:25.078 578c Level-0 table #13: 72175 bytes OK
+2025/05/28-16:55:25.081 578c Delete type=0 #9
