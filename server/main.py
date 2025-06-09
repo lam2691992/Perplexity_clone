@@ -10,47 +10,52 @@ app = FastAPI()
 
 search_service = SearchService()
 sort_source_service = SortSourceService()
-llm_service = LLMService()
+llm_sessions = {}  # lưu phiên theo người dùng
 
-# chat websocket
 @app.websocket("/ws/chat")
 async def websocket_chat_endpoint(websocket: WebSocket):
     await websocket.accept()
-    
+    client_id = f"{websocket.client.host}:{websocket.client.port}"
+
+    if client_id not in llm_sessions:
+        llm_sessions[client_id] = LLMService()
+    llm_service = llm_sessions[client_id]
+
     try:
-        await asyncio.sleep(0.1)
-        data = await websocket.receive_json()
+        while True:
+            data = await websocket.receive_json()
+            query = data.get("query")
 
-        query = data.get("query")
+            search_results = search_service.web_search(query)
+            sorted_results = sort_source_service.sort_sources(query, search_results)
 
-        search_results = search_service.web_search(query)
+            await websocket.send_json({
+                'type': 'search_result',
+                'data': sorted_results
+            })
 
-        sorted_results = sort_source_service.sort_sources(query, search_results)  
-        await asyncio.sleep(0.1)
-        await websocket.send_json({
-            'type': 'search_result',
-            'data': sorted_results
-        })
-        
-        
-        for chunk in llm_service.generate_response(query, sorted_results):
-            await asyncio.sleep(0.1)
-            await websocket.send_json({"type": "content", "data": chunk})
+            for chunk in llm_service.generate_response(query, sorted_results):
+                await asyncio.sleep(0.05)
+                await websocket.send_json({
+                    "type": "content",
+                    "data": chunk
+                })
 
-            
-    except:
-        print("Unexpected error occurred")
+    except Exception as e:
+        print(f"WebSocket error: {e}")
     finally:
         await websocket.close()
+        llm_sessions.pop(client_id, None)
 
 
-
-# chat
 @app.post("/chat")
-def chat_endpoint(body: ChatBody): 
+def chat_endpoint(body: ChatBody):
+    # Đơn lượt, không lưu lịch sử
+    llm_service = LLMService()
     search_results = search_service.web_search(body.query)
     sorted_results = sort_source_service.sort_sources(body.query, search_results)
-    
+
     response = llm_service.generate_response(body.query, sorted_results)
-    
-    return {"response": response}
+    full_response = "".join(response)
+
+    return {"response": full_response}

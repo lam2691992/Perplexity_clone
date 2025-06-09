@@ -15,6 +15,15 @@ class SearchSection extends StatefulWidget {
 class _SearchSectionState extends State<SearchSection> {
   final queryController = TextEditingController();
 
+  void _submitQuery(BuildContext context) {
+    final query = queryController.text.trim();
+    if (query.isNotEmpty) { // Kiểm tra query không rỗng
+      ChatWebService().chat(query);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ChatPage(question: query)));
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -31,7 +40,7 @@ class _SearchSectionState extends State<SearchSection> {
           runSpacing: 4,
           children: [
             Text(
-              'Google hết thời rồi :v',
+              'Hỏi ngu vừa thôi,',
               style: GoogleFonts.ibmPlexMono(
                 fontSize: 30,
                 fontWeight: FontWeight.w400,
@@ -40,7 +49,7 @@ class _SearchSectionState extends State<SearchSection> {
               ),
             ),
             Text(
-              'bây giờ đến lượt anh =)))',
+              'anh còn để dành sự kiên nhẫn cho người đến sau =)))',
               style: GoogleFonts.ibmPlexMono(
                 fontSize: 30,
                 fontWeight: FontWeight.w400,
@@ -77,6 +86,9 @@ class _SearchSectionState extends State<SearchSection> {
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                   ),
+                  onSubmitted: (value) {
+                    _submitQuery(context); // Xử lý khi nhấn Enter
+                  },
                 ),
               ),
               Padding(
@@ -97,10 +109,7 @@ class _SearchSectionState extends State<SearchSection> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                        ChatWebService().chat(queryController.text.trim());
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatPage(
-                                question: queryController.text.trim())));
+                        _submitQuery(context); // Xử lý khi nhấn nút
                       },
                       child: Container(
                         padding: const EdgeInsets.all(9),
