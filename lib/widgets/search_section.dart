@@ -40,7 +40,7 @@ class _SearchSectionState extends State<SearchSection> {
           runSpacing: 4,
           children: [
             Text(
-              'Hỏi ngu vừa thôi,',
+              'Chất LGBT lên,',
               style: GoogleFonts.ibmPlexMono(
                 fontSize: 30,
                 fontWeight: FontWeight.w400,
@@ -49,7 +49,7 @@ class _SearchSectionState extends State<SearchSection> {
               ),
             ),
             Text(
-              'anh còn để dành sự kiên nhẫn cho người đến sau =)))',
+              'và đốt 🔥🔥🔥',
               style: GoogleFonts.ibmPlexMono(
                 fontSize: 30,
                 fontWeight: FontWeight.w400,
